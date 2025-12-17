@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  city-app:
+    image: kappu1512/springboot-city-images:latest
+    build:
+      context: ./springboot-city-images
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
