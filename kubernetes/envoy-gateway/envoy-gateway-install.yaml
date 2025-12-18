@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: envoy-gateway
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: envoy-gateway
+  namespace: envoy-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: envoy-gateway
+  template:
+    metadata:
+      labels:
+        app: envoy-gateway
+    spec:
+      containers:
+        - name: envoy-gateway
+          image: docker.io/envoyproxy/gateway:v1.0.0
+          args:
+            - serve
+          ports:
+            - containerPort: 18000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: envoy-gateway
+  namespace: envoy-gateway
+spec:
+  selector:
+    app: envoy-gateway
+  ports:
+    - port: 18000
+      targetPort: 18000
