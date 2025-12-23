@@ -61,7 +61,7 @@ kubernetes/
     ├── gateway.yaml
     └── httproute.yaml
 ```
-🔴 Scenario 1: NGINX Ingress + Gateway API (❌ FAIL CASE)
+🔴 ## Scenario 1: NGINX Ingress + Gateway API (❌ FAIL CASE)
 
 - This cluster intentionally demonstrates that:
 - NGINX Ingress is not a native Gateway API controller
