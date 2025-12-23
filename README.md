@@ -133,3 +133,95 @@ Gateway remains Pending
 - NGINX is Ingress-first, not Gateway-native
 - Gateway API support is experimental / incomplete
 - Operationally unsafe for production Gateway API use
+
+## 🟢 Scenario 2: Envoy Gateway + Gateway API (✅ SUCCESS CASE)
+
+This cluster demonstrates how Gateway API is meant to work.
+
+1️⃣ Create Cluster: envoy-gateway-success
+```bash
+kind create cluster --name envoy-gateway-success
+kubectl config use-context kind-envoy-gateway-success
+```
+2️⃣ Deploy Application
+```bash
+kubectl apply -f kubernetes/base/
+```
+3️⃣ Install Gateway API CRDs (Standard + Experimental)
+```bash
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/experimental-install.yaml
+```
+4️⃣ Install Envoy Gateway (Correct Method)
+```bash
+kubectl apply -f https://github.com/envoyproxy/gateway/releases/download/v1.0.0/install.yaml
+```
+Verify:
+```bash
+kubectl get pods -n envoy-gateway
+```
+<add screenshot: Envoy gateway running>
+
+5️⃣ Deploy Gateway API Resources
+```bash
+kubectl apply -f kubernetes/envoy-gateway/
+```
+Verify:
+```bash
+kubectl get gatewayclass
+kubectl get gateway
+kubectl describe gateway city-gateway
+```
+<add screenshot: Gateway ACCEPTED & PROGRAMMED>
+
+6️⃣ Discover the Envoy Data Plane Service
+```bash
+kubectl get svc -A | grep envoy
+```
+You will see something like:
+```bash
+envoy-gateway-system   envoy-default-city-gateway-xxxxx   LoadBalancer   ...   80
+```
+7️⃣ Port-Forward Envoy Gateway Listener
+```bash
+kubectl port-forward -n envoy-gateway-system svc/envoy-default-city-gateway-xxxxx 8080:80
+```
+Test:
+```bash
+curl http://localhost:8080/canada
+curl http://localhost:8080/paris
+curl http://localhost:8080/losangeles
+curl http://localhost:8080/newdelhi
+```
+<add screenshot: All routes working>
+
+## 🏗 Architecture Diagram
+
+- NGINX Ingress architecture
+- Envoy Gateway architecture
+- Control plane vs Data plane separation
+
+## 📊 Final Comparison
+
+| Feature                 | NGINX Ingress     | Envoy Gateway |
+| ----------------------- | ----------------- | ------------- |
+| Gateway API native      | ❌ No              | ✅ Yes         |
+| Dataplane auto-creation | ❌ No              | ✅ Yes         |
+| Route status visibility | ❌ Limited         | ✅ Full        |
+| Production Gateway API  | ❌ Not recommended | ✅ Recommended |
+
+## 🎯 Key Takeaway
+
+- Ingress is legacy. Gateway API is the future.
+- Gateway API requires a native Gateway controller, not a traditional ingress controller.
+
+This repo intentionally shows what fails and what succeeds — exactly how real production systems behave.
+
+## 🧹 Cleanup
+```bash
+kind delete cluster --name nginx-gateway-fail
+kind delete cluster --name envoy-gateway-success
+```
+## ⭐ If you found this useful
+
+Give the repo a ⭐ and connect on LinkedIn for more deep-dive DevOps content.
