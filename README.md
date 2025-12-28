@@ -84,7 +84,7 @@ kubectl apply -f kubernetes/base/
 kubectl get pods
 kubectl get svc
 ```
-<add screenshots for k get pods and svc here>
+![nginx-ns-pods-svc](images/nginx-ns-pods-svc.png)
 
 4️⃣ Install NGINX Ingress Controller (Official Way)
 ```bash
@@ -94,7 +94,7 @@ Verify:
 ```bash
 kubectl get pods -n ingress-nginx
 ```
-<add screenshot ingress controller running here>
+![nginx-ingress-controller](images/nginx-ingress-controller.png)
 
 5️⃣ Deploy Traditional Ingress (Works)
 ```bash
@@ -105,7 +105,11 @@ Test:
 kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8080:80
 curl http://localhost:8080/canada
 ```
-<add screenshot App accessible via ingress>
+![nginx-port-forward](images/nginx-port-forward.png)
+![nginx-curl-localhost](images/nginx-curl-localhost.png)
+![localhost-browser-1](images/localhost-browser-1.png)
+![localhost-browser-canada](images/localhost-browser-canada.png)
+![localhost-browser-newdelhi](images/localhost-browser-newdelhi.png)
 
 6️⃣ Install Gateway API CRDs
 ```bash
@@ -126,7 +130,7 @@ Gateway remains Pending
 - No dataplane Service created
 - No listener address assigned
 
-<add screenshot: Waiting for controller>
+![gateway-waiting-for-nginx-controller](images/gateway-waiting-for-nginx-controller.png)
 
 ❌ Conclusion (Scenario 1)
 
@@ -160,7 +164,7 @@ Verify:
 ```bash
 kubectl get pods -n envoy-gateway
 ```
-<add screenshot: Envoy gateway running>
+![envoy-gateway-running](images/envoy-gateway-running.png)
 
 5️⃣ Deploy Gateway API Resources
 ```bash
@@ -172,7 +176,7 @@ kubectl get gatewayclass
 kubectl get gateway
 kubectl describe gateway city-gateway
 ```
-<add screenshot: Gateway ACCEPTED & PROGRAMMED>
+![envoy-gateway-accepted-programmed](images/envoy-gateway-accepted-programmed.png)
 
 6️⃣ Discover the Envoy Data Plane Service
 ```bash
@@ -193,8 +197,10 @@ curl http://localhost:8080/paris
 curl http://localhost:8080/losangeles
 curl http://localhost:8080/newdelhi
 ```
-<add screenshot: All routes working>
-
+![envoy-port-forward](images/envoy-port-forward.png)
+![envoy-curl-localhost-canada](images/envoy-curl-localhost-canada.png)
+![localhost-browser-losangeles](images/localhost-browser-losangeles.png)
+![localhost-browser-paris](images/localhost-browser-paris.png)
 ## 🏗 Architecture Diagram
 
 - NGINX Ingress architecture
