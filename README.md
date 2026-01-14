@@ -1,5 +1,5 @@
 # Kubernetes Ingress vs Gateway API
-### NGINX Ingress vs Envoy Gateway (Real-World Comparison)
+### NGINX Ingress vs Envoy Gateway (Real-World Comparison) 
 
 This repository demonstrates **two real Kubernetes traffic management scenarios** using **kind (Kubernetes in Docker)**:
 
